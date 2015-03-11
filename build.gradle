@@ -1,0 +1,43 @@
+configurations {
+    pack
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.7
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+ant.importBuild('build.xml')
+dependencies {
+
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+
+
+//task proguard(type: JavaExec, dependsOn: jar) {
+//    classpath = configurations.proguard
+//    main = 'proguard.ProGuard'
+//    args "-libraryjars ${System.properties['java.home']}/lib/rt.jar"
+//    args '-dontobfuscate'
+//    args '-dontoptimize'
+//    args '-keep public class org.jf.smali.main { public static void main(java.lang.String[]); }'
+//    args '-keepclassmembers enum * { public static **[] values(); public static ** valueOf(java.lang.String); }'
+//    args '-dontwarn com.google.common.base.**'
+//    args '-dontnote com.google.common.base.**'
+//}
+
+
+task pack(type: JavaExec) {
+    classpath = configurations.pack
+    workingDir = '~/Dropbox/git/BuildGraph/dist'
+
+    main = 'pack.Main'
+    args '-mainjar', 'dist/buildGraph.jar', '-directory', '../lib', '-destjar', 'buildGraph-pack.jar'
+ }
